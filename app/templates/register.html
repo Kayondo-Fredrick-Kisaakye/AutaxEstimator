@@ -5,10 +5,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AutaxEstimator | Register</title>
+
+    <!--Tailwind CSS-->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
-<body>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
 
+    <div lass="bg-white rounded-xl shadow border p-8 max-w-sm w-full">
+
+        <!--Page Heading-->
+        <h2 class="text-xl font-bold text-gray-700 text-center mb-4">Bond Register Profile</h2>
+
+        <!--Registration Form-->
+        <form method="post" action="{{ url_for('register') }}" class="space-y-4">
+
+            <!--Bond Industrial Name-->
+            <div>
+                <label for="bond_name" class="block text-xs font-bold text-gray-500 mb-1">BOND INDUSTRIAL NAME</label>
+                <input type="text" id="bond_name" name="bond_name" class="w-full border rounded p-2" required>
+            </div>
+
+            <!--Username-->
+            <div>
+                <label for="username" class="block text-xs font-bold text-gray-500 mb-1">USERNAME</label>
+                <input type="text" name="username" id="username" class="w-full border rounded p-2"
+                    autocomplete="username" required>
+            </div>
+
+            <!--Password-->
+            <div>
+                <label for="password" class="block text-xs font-bold text-gray-500 mb-1">PASSWORD</label>
+                <input type="password" id="password" name="password" class="w-full border rounded p-2" required>
+            </div>
+
+            <!--Create Account Button-->
+            <button type="submit" class="w-full bg-green-600 text-white font-bold p-3 rounded hover:bg-green-700">CREATE
+                ACCOUNT</button>
+
+        </form>
+
+        <!--Login Link-->
+        <p class="text-xs text-center mt-4 text-gray-400">Have an Account?<a href="{{ url_for('login') }}"
+                class="text-blue-600 underline font-bold"> Login Here</a></p>
+
+    </div>
 </body>
 
 </html>

@@ -5,51 +5,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AutaxEstimator | Register</title>
-
-    <!--Tailwind CSS-->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+<body class="auth-page">
+    <main class="auth-card">
+        <p class="brand">AutaxEstimator</p>
+        <h1 class="page-title">Create your account</h1>
+        <p class="page-intro">Set up a profile for your bond or clearing operation.</p>
 
-    <div lass="bg-white rounded-xl shadow border p-8 max-w-sm w-full">
-
-        <!--Page Heading-->
-        <h2 class="text-xl font-bold text-gray-700 text-center mb-4">Bond Register Profile</h2>
-
-        <!--Registration Form-->
-        <form method="post" action="{{ url_for('register') }}" class="space-y-4">
+        <form method="post" action="{{ url_for('register') }}" class="form">
 
             <!--Bond Industrial Name-->
-            <div>
-                <label for="bond_name" class="block text-xs font-bold text-gray-500 mb-1">BOND INDUSTRIAL NAME</label>
-                <input type="text" id="bond_name" name="bond_name" class="w-full border rounded p-2" required>
+            <div class="field">
+                <label for="bond_name">Bond or company name</label>
+                <input type="text" id="bond_name" name="bond_name" required>
             </div>
 
             <!--Username-->
-            <div>
-                <label for="username" class="block text-xs font-bold text-gray-500 mb-1">USERNAME</label>
-                <input type="text" name="username" id="username" class="w-full border rounded p-2"
-                    autocomplete="username" required>
+            <div class="field">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" autocomplete="username" required>
             </div>
 
             <!--Password-->
-            <div>
-                <label for="password" class="block text-xs font-bold text-gray-500 mb-1">PASSWORD</label>
-                <input type="password" id="password" name="password" class="w-full border rounded p-2" required>
+            <div class="field">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
             </div>
 
             <!--Create Account Button-->
-            <button type="submit" class="w-full bg-green-600 text-white font-bold p-3 rounded hover:bg-green-700">CREATE
-                ACCOUNT</button>
+            <button type="submit" class="button">Create account</button>
 
         </form>
 
         <!--Login Link-->
-        <p class="text-xs text-center mt-4 text-gray-400">Have an Account?<a href="{{ url_for('login') }}"
-                class="text-blue-600 underline font-bold"> Login Here</a></p>
-
-    </div>
+        <p class="form-note">Already have an account? <a href="{{ url_for('login') }}">Log in</a></p>
+    </main>
 </body>
 
 </html>

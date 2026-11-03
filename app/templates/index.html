@@ -5,10 +5,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AutaxEstimator | Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
-<body>
-
+<body class="home-page">
+    <main class="home-shell">
+        <header class="home-header">
+            <div>
+                <p class="brand">Uganda vehicle import planning</p>
+                <h1 class="page-title">Know the cost before the car arrives.</h1>
+            </div>
+            <p class="home-copy">AutaxEstimator brings the main import taxes and statutory fees into one clear estimate,
+                so your next vehicle decision starts with better numbers.</p>
+        </header>
+        <nav class="home-actions" aria-label="Account actions">
+            <a class="home-link primary" href="{{ url_for('login') }}">Log in</a>
+            <a class="home-link secondary" href="{{ url_for('register') }}">Create an account</a>
+        </nav>
+    </main>
 </body>
 
 </html>

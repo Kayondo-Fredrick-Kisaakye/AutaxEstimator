@@ -3,11 +3,23 @@ from datetime import datetime
 
 def calculate_ura_car_tax(cif_usd, engine_cc, year_of_manufacture, usd_to_ugx_rate):
 
-    # A. Convert base vehicle cost from Dollars to UGX
-    cif_ugx = float(cif_usd) * float(usd_to_ugx_rate)
+    # A. Convert and validate the base vehicle values
+    cif_usd = float(cif_usd)
+    engine_cc = int(engine_cc)
+    year_of_manufacture = int(year_of_manufacture)
+    usd_to_ugx_rate = float(usd_to_ugx_rate)
+
+    if cif_usd <= 0 or engine_cc <= 0 or usd_to_ugx_rate <= 0:
+        raise ValueError(
+            "CIF, engine capacity, and exchange rate must be greater than zero."
+        )
 
     # B. Statutory age limit
-    current_year = 2026  # Anchored timline
+    current_year = datetime.now().year
+    if year_of_manufacture > current_year:
+        raise ValueError("Year of manufacture cannot be in the future.")
+
+    cif_ugx = cif_usd * usd_to_ugx_rate
     vehicle_age = current_year - year_of_manufacture
 
     # Limit is 15 years
@@ -17,23 +29,23 @@ def calculate_ura_car_tax(cif_usd, engine_cc, year_of_manufacture, usd_to_ugx_ra
             "message": f"This vehicle is {vehicle_age} years old. Uganda's Import-Age-Limit is 15 years.",
         }
 
-    # Environmental Levy - 50% of CIF if the car is 9 years older
+    # Environmental Levy - 50% of CIF if the car is 9 years or older
     if vehicle_age >= 9:
         env_levy_ugx = cif_ugx * 0.50
     else:
         env_levy_ugx = 0.0
 
-    # C. Calc sequential tax componets
-    # 1. Import duty always 25% of innitial UGX CIF value
-    import_duty_ugx = cif_ugx * 0, 25
+    # C. Calc sequential tax components
+    # 1. Import duty always 25% of initial UGX CIF value
+    import_duty_ugx = cif_ugx * 0.25
 
-    # 2. Excise duty 10% layer applied if engine displacement esceeds 2000cc
+    # 2. Excise duty 10% layer applied if engine displacement exceeds 2000cc
     if engine_cc > 2000:
-        excise_duty_ugx = (cif_ugx + import_duty_ugx) + 0.10
+        excise_duty_ugx = (cif_ugx + import_duty_ugx) * 0.10
     else:
         excise_duty_ugx = 0.0
 
-    # 3. Value Added Tzx 18% applied on a combined taxable base
+    # 3. Value Added Tax 18% applied on a combined taxable base
     vat_base = cif_ugx + import_duty_ugx + excise_duty_ugx
     vat_ugx = vat_base * 0.18
 

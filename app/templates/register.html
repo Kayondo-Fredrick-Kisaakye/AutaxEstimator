@@ -15,6 +15,7 @@
         <p class="page-intro">Set up a profile for your bond or clearing operation.</p>
 
         <form method="post" action="{{ url_for('register') }}" class="form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
             <!--Bond Industrial Name-->
             <div class="field">

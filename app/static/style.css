@@ -330,6 +330,14 @@ a:hover {
     line-height: 1.5;
 }
 
+.rate-note {
+    margin: -0.5rem 0 0;
+    color: var(--muted);
+    font-family: Arial, sans-serif;
+    font-size: 0.75rem;
+    line-height: 1.5;
+}
+
 .history-list {
     display: grid;
     gap: 1rem;

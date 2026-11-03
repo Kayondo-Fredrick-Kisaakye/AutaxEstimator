@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutaxEstimator | History</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="estimate-page">
+    <main class="estimate-shell">
+        <header class="estimate-header">
+            <a class="back-link" href="{{ url_for('estimate') }}">New estimate</a>
+            <p class="brand">AutaxEstimator</p>
+            <h1 class="page-title">Your calculation history.</h1>
+            <p class="page-intro">Signed-in estimates are kept here for quick reference.</p>
+        </header>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="flash">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <section class="history-list" aria-label="Saved calculations">
+            {% if calculations %}
+            {% for calculation in calculations %}
+            <article class="history-item">
+                <div>
+                    <p class="result-label">{{ calculation[4].strftime('%d %b %Y') }}</p>
+                    <h2>USD {{ "{:,.2f}".format(calculation[0]) }}</h2>
+                    <p>{{ calculation[1] }}cc engine · {{ calculation[2] }} model year</p>
+                </div>
+                <strong>UGX {{ "{:,.0f}".format(calculation[3]) }}</strong>
+            </article>
+            {% endfor %}
+            {% else %}
+            <div class="result result-empty">
+                <p class="result-label">No saved estimates</p>
+                <h2>Your history is empty.</h2>
+                <p>Complete an estimate while signed in and it will appear here.</p>
+            </div>
+            {% endif %}
+        </section>
+    </main>
+</body>
+
+</html>

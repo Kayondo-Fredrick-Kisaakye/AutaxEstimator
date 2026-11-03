@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutaxEstimator | Estimate</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="estimate-page">
+    <main class="estimate-shell">
+        <header class="estimate-header">
+            <a class="back-link" href="{{ url_for('index') }}">Back to home</a>
+            <p class="brand">AutaxEstimator</p>
+            <h1 class="page-title">Estimate your import cost.</h1>
+            <p class="page-intro">Enter the vehicle details below for an indicative Uganda import tax estimate.</p>
+        </header>
+
+        <section class="estimate-layout" aria-label="Vehicle tax estimator">
+            <form method="post" action="{{ url_for('estimate') }}" class="form estimate-form">
+                <div class="field">
+                    <label for="cif_usd">CIF value in USD</label>
+                    <input type="number" id="cif_usd" name="cif_usd" min="0.01" step="0.01" required>
+                </div>
+
+                <div class="field">
+                    <label for="engine_cc">Engine capacity in cc</label>
+                    <input type="number" id="engine_cc" name="engine_cc" min="1" step="1" required>
+                </div>
+
+                <div class="field">
+                    <label for="year_of_manufacture">Year of manufacture</label>
+                    <input type="number" id="year_of_manufacture" name="year_of_manufacture" min="1900"
+                        max="{{ current_year }}" step="1" required>
+                </div>
+
+                <div class="field">
+                    <label for="usd_to_ugx_rate">USD to UGX exchange rate</label>
+                    <input type="number" id="usd_to_ugx_rate" name="usd_to_ugx_rate" min="0.01" step="0.01" required>
+                </div>
+
+                <button type="submit" class="button">Calculate estimate</button>
+            </form>
+
+            <section class="estimate-result" aria-live="polite">
+                {% if error %}
+                <div class="result result-error">
+                    <p class="result-label">Check your details</p>
+                    <h2>We could not calculate this estimate.</h2>
+                    <p>{{ error }}</p>
+                </div>
+                {% elif result and result.status == "BANNED" %}
+                <div class="result result-warning">
+                    <p class="result-label">Import not approved</p>
+                    <h2>This vehicle exceeds the age limit.</h2>
+                    <p>{{ result.message }}</p>
+                </div>
+                {% elif result and result.status == "APPROVED" %}
+                <div class="result result-approved">
+                    <p class="result-label">Estimated total payable</p>
+                    <h2>UGX {{ "{:,.0f}".format(result.breakdown.total_payable_to_ura_ugx) }}</h2>
+                    <dl class="breakdown">
+                        <div>
+                            <dt>CIF value</dt>
+                            <dd>UGX {{ "{:,.0f}".format(result.breakdown.cif_value_ugx) }}</dd>
+                        </div>
+                        <div>
+                            <dt>Import duty</dt>
+                            <dd>UGX {{ "{:,.0f}".format(result.breakdown.import_duty_ugx) }}</dd>
+                        </div>
+                        <div>
+                            <dt>Excise duty</dt>
+                            <dd>UGX {{ "{:,.0f}".format(result.breakdown.excise_duty_ugx) }}</dd>
+                        </div>
+                        <div>
+                            <dt>VAT</dt>
+                            <dd>UGX {{ "{:,.0f}".format(result.breakdown.vat_ugx) }}</dd>
+                        </div>
+                        <div>
+                            <dt>Environmental levy</dt>
+                            <dd>UGX {{ "{:,.0f}".format(result.breakdown.environmental_levy_ugx) }}</dd>
+                        </div>
+                        <div>
+                            <dt>Withholding tax</dt>
+                            <dd>UGX {{ "{:,.0f}".format(result.breakdown.withholding_tax_ugx) }}</dd>
+                        </div>
+                        <div>
+                            <dt>Infrastructure levy</dt>
+                            <dd>UGX {{ "{:,.0f}".format(result.breakdown.infrastructure_levy_ugx) }}</dd>
+                        </div>
+                        <div>
+                            <dt>IDF fee</dt>
+                            <dd>UGX {{ "{:,.0f}".format(result.breakdown.idf_fee_ugx) }}</dd>
+                        </div>
+                        <div>
+                            <dt>Fixed fees</dt>
+                            <dd>UGX {{ "{:,.0f}".format(result.breakdown.fixed_fees_ugx) }}</dd>
+                        </div>
+                    </dl>
+                    <p class="result-note">This is an estimate. Final assessment is determined by URA and other relevant
+                        authorities.</p>
+                </div>
+                {% else %}
+                <div class="result result-empty">
+                    <p class="result-label">Your estimate</p>
+                    <h2>Four details in. One clearer number out.</h2>
+                    <p>Your calculation will appear here after you submit the vehicle details.</p>
+                </div>
+                {% endif %}
+            </section>
+        </section>
+    </main>
+</body>
+
+</html>
